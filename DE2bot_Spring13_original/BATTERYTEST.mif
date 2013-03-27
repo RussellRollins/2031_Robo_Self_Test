@@ -1,0 +1,67 @@
+-- Altera Memory Initialization File (MIF)
+
+DEPTH = 1024;
+WIDTH = 16;
+
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT
+  BEGIN
+    [000..3FF] : 0000;  -- Default to NOP
+
+           000 : 0424;  -- 		LOAD	AllOn
+           001 : 4C04;  -- 		OUT		SEVENSEG
+           002 : 4C01;  -- 		OUT		LEDS
+           003 : 4C06;  -- 		OUT		LCD
+           004 : 0432;  -- 		LOAD 	WR2BYTE_ADC
+           005 : 4C90;  -- 		OUT	I2C_CMD                                                                                                                                  
+           006 : 0419;  -- 		LOAD 	Zero
+           007 : 4C91;  -- 		OUT 	I2C_DATA
+           008 : 4892;  -- B0:		IN	I2C_BUSY
+           009 : 200B;  -- 		JZERO  OUT1
+           00A : 1408;  -- 		JUMP   B0
+           00B : 4891;  -- OUT1:	IN 	I2C_DATA
+           00C : 4C06;  -- 		OUT 	LCD
+           00D : 0434;  -- CHECK:	LOAD 	RD1BYTE_ADC
+           00E : 4C90;  -- 		OUT 	I2C_CMD
+           00F : 4C91;  -- 		OUT 	I2C_DATA
+           010 : 4892;  -- B1:		IN	I2C_BUSY
+           011 : 1C10;  -- 		JPOS	B1
+           012 : 1810;  -- 		JNEG	B1
+           013 : 4891;  -- 		IN	I2C_DATA
+           014 : 4C06;  -- 		OUT 	LCD
+           015 : 140D;  -- 		JUMP	CHECK
+           016 : 0000;  -- N:		NOP
+           017 : 1416;  -- 		JUMP N
+           018 : 0000;  -- Temp:     DW 0
+           019 : 0000;  -- Zero:     DW &H00
+           01A : 0001;  -- One:      DW 1
+           01B : 0002;  -- Two:      DW 2
+           01C : 0003;  -- Three:    DW 3
+           01D : 0004;  -- Four:     DW 4
+           01E : 0005;  -- Five:     DW 5
+           01F : 0006;  -- Six:      DW 6
+           020 : 0007;  -- Seven:    DW 7
+           021 : 0008;  -- Eight:    DW 8
+           022 : 0009;  -- Nine:     DW 9
+           023 : 000A;  -- Ten:      DW 10
+           024 : FFFF;  -- AllOn:	  DW &HFFFF
+           025 : 0064;  -- Forward:  DW 100
+           026 : FF9C;  -- Reverse:  DW -100
+           027 : 0001;  -- EnSonar0: DW &B00000001
+           028 : 0002;  -- EnSonar1: DW &B00000010
+           029 : 0004;  -- EnSonar2: DW &B00000100
+           02A : 0008;  -- EnSonar3: DW &B00001000
+           02B : 0010;  -- EnSonar4: DW &B00010000
+           02C : 0020;  -- EnSonar5: DW &B00100000
+           02D : 0040;  -- EnSonar6: DW &B01000000
+           02E : 0080;  -- EnSonar7: DW &B10000000
+           02F : 00FF;  -- EnSonars: DW &B11111111
+           030 : 0090;  -- WR0BYTE_ADC:  DW &H0090
+           031 : 1090;  -- WR1BYTE_ADC:  DW &H1090
+           032 : 2090;  -- WR2BYTE_ADC:  DW &H2090
+           033 : 0090;  -- RD0BYTE_ADC:  DW &H0090
+           034 : 0190;  -- RD1BYTE_ADC:  DW &H0190
+           035 : 0290;  -- RD2BYTE_ADC:  DW &H0290
+  END;
